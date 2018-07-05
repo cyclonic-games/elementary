@@ -30,7 +30,7 @@ module.exports = class Icon extends Component {
 
     render () {
         const [ category, which ] = this.glyph.split('/');
-        const glyph = fs.readFileSync(`${ icons }/${ category }/svg/production/ic_${ which }_48px.svg`);
+        const glyph = fs.readFileSync(`${ icons }/${ category }/svg/production/ic_${ which }_24px.svg`);
 
         return (
             element('i', { id: 'icon', className: 'material-icons', innerHTML: glyph })

@@ -6,7 +6,7 @@ const palette = require('../core/palette');
 module.exports = class Frame extends Component {
 
     get css () {
-        const { external } = palette;
+        const { red, green, yellow, external } = palette;
 
         return `
             :host {
@@ -28,14 +28,14 @@ module.exports = class Frame extends Component {
             #bar {
                 display: flex;
                 align-items: center;
-                height: 38px;
+                height: 36px;
                 padding: 0 16px;
-                font-size: 11px;
+                font-size: 12px;
                 word-spacing: 2px;
                 text-transform: uppercase;
                 color: white;
                 background: hsla(${ external[ 0 ] }, ${ external[ 1 ] }%, ${ external[ 2 ] }%, 0.93);
-                border-radius: 3px 3px 0 0;
+                border-radius: 6px 6px 0 0;
                 -webkit-app-region: drag;
             }
 
@@ -60,7 +60,7 @@ module.exports = class Frame extends Component {
                 display: block;
                 width: 12px;
                 height: 12px;
-                margin-left: 12px;
+                margin-left: 10px;
                 padding: 0;
                 background: none;
                 border: none;
@@ -70,27 +70,42 @@ module.exports = class Frame extends Component {
             }
 
             #controls #close {
-                box-shadow: inset 0 0 0 1px #e41536;
+                box-shadow: inset 0 0 0 1px hsl(${ red[ 0 ] }, ${ red[ 1 ] }%, ${ red[ 2 ] }%),
+                            inset 0 0 4px 3px hsla(${ red[ 0 ] }, ${ red[ 1 ] }%, ${ red[ 2 ] }%, 0.2),
+                            0 0 7px 1px hsla(${ red[ 0 ] }, ${ red[ 1 ] }%, ${ red[ 2 ] }%, 0.4);
             }
 
             #controls #close:hover {
-                background: #e41536;
+                background: hsl(${ red[ 0 ] }, ${ red[ 1 ] }%, ${ red[ 2 ] }%);
+                box-shadow: inset 0 0 0 1px hsl(${ red[ 0 ] }, ${ red[ 1 ] }%, ${ red[ 2 ] }%),
+                            inset 0 0 4px 4px hsla(${ red[ 0 ] }, ${ red[ 1 ] }%, ${ red[ 2 ] }%, 0.2),
+                            0 0 8px 2px hsla(${ red[ 0 ] }, ${ red[ 1 ] }%, ${ red[ 2 ] }%, 0.6);
             }
 
             #controls #maximize {
-                box-shadow: inset 0 0 0 1px #4eca17;
+                box-shadow: inset 0 0 0 1px hsl(${ green[ 0 ] }, ${ green[ 1 ] }%, ${ green[ 2 ] }%),
+                            inset 0 0 4px 2px hsla(${ green[ 0 ] }, ${ green[ 1 ] }%, ${ green[ 2 ] }%, 0.2),
+                            0 0 7px 1px hsla(${ green[ 0 ] }, ${ green[ 1 ] }%, ${ green[ 2 ] }%, 0.28);
             }
 
             #controls #maximize:hover {
-                background: #4eca17;
+                background: hsl(${ green[ 0 ] }, ${ green[ 1 ] }%, ${ green[ 2 ] }%);
+                box-shadow: inset 0 0 0 1px hsl(${ green[ 0 ] }, ${ green[ 1 ] }%, ${ green[ 2 ] }%),
+                            inset 0 0 4px 4px hsla(${ green[ 0 ] }, ${ green[ 1 ] }%, ${ green[ 2 ] }%, 0.2),
+                            0 0 8px 2px hsla(${ green[ 0 ] }, ${ green[ 1 ] }%, ${ green[ 2 ] }%, 0.5);
             }
 
             #controls #minimize {
-                box-shadow: inset 0 0 0 1px #eeba1b;
+                box-shadow: inset 0 0 0 1px hsl(${ yellow[ 0 ] }, ${ yellow[ 1 ] }%, ${ yellow[ 2 ] }%),
+                            inset 0 0 4px 2px hsla(${ yellow[ 0 ] }, ${ yellow[ 1 ] }%, ${ yellow[ 2 ] }%, 0.2),
+                            0 0 7px 1px hsla(${ yellow[ 0 ] }, ${ yellow[ 1 ] }%, ${ yellow[ 2 ] }%, 0.28);
             }
 
             #controls #minimize:hover {
-                background: #eeba1b;
+                background: hsl(${ yellow[ 0 ] }, ${ yellow[ 1 ] }%, ${ yellow[ 2 ] }%);
+                box-shadow: inset 0 0 0 1px hsl(${ yellow[ 0 ] }, ${ yellow[ 1 ] }%, ${ yellow[ 2 ] }%),
+                            inset 0 0 4px 4px hsla(${ yellow[ 0 ] }, ${ yellow[ 1 ] }%, ${ yellow[ 2 ] }%, 0.2),
+                            0 0 8px 2px hsla(${ yellow[ 0 ] }, ${ yellow[ 1 ] }%, ${ yellow[ 2 ] }%, 0.5);
             }
 
             #content {
@@ -102,7 +117,7 @@ module.exports = class Frame extends Component {
                 background: rgba(37, 39, 51, 0.93);
                 border: 1px solid rgba(0, 0, 0, 0.33);
                 border-top: none;
-                border-radius: 0 0 3px 3px;
+                border-radius: 0 0 6px 6px;
             }
         `;
     }

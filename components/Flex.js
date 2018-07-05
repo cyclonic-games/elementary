@@ -7,12 +7,17 @@ module.exports = class Flex extends Component {
         return `
             :host {
                 display: flex;
-                flex-grow: 1;
+                flex-grow: ${ this.grow };
+                flex-shrink: ${ this.shrink };
+                flex-basis: ${ this.basis };
             }
-            
+
             #flex {
                 display: flex;
-                flex-grow: 1;
+                flex-grow: ${ this.grow };
+                flex-shrink: ${ this.shrink };
+                flex-basis: ${ this.basis };
+                flex-direction: ${ this.direction };
             }
         `;
     }
@@ -25,4 +30,13 @@ module.exports = class Flex extends Component {
             ])
         )
     }
-}
+};
+
+module.exports.elementName = 'elementary-flex'
+
+module.exports.defaultProperties = {
+    grow: 0,
+    shrink: 0,
+    basis: 'auto',
+    direction: 'row'
+};

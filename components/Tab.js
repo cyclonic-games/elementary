@@ -27,7 +27,9 @@ module.exports = class Tab extends Component {
 module.exports.elementName = 'elementary-tab';
 
 module.exports.defaultProperties = {
-    align: 'start'
+    align: 'start',
+    icon: null,
+    text: null
 };
 
 module.exports.initialState = {
@@ -43,6 +45,7 @@ module.exports.Group = class TabGroup extends Component {
         return `
             :host {
                 display: flex;
+                flex-grow: 1;
             }
 
             #container {
@@ -52,9 +55,15 @@ module.exports.Group = class TabGroup extends Component {
                 padding: 4px;
             }
 
+            #divider {
+                z-index: 1;
+                height: 3px;
+                background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
+                box-shadow: 0 0 4px 1px hsla(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%, 0.33);
+            }
+
             #tabs {
                 display: flex;
-                border-bottom: 3px solid hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
             }
 
             #tabs button {
@@ -77,7 +86,7 @@ module.exports.Group = class TabGroup extends Component {
 
             #tabs #tab-${ active } {
                 background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
-                box-shadow: none;
+                box-shadow: 0 0 4px 1px hsla(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%, 0.33);
             }
 
             #tabs #tab-${ active }:hover {
@@ -111,7 +120,8 @@ module.exports.Group = class TabGroup extends Component {
         this.tabs = Array.from(this.children).map(tab => ({
             align: tab.align,
             icon: tab.icon,
-            name: tab.name
+            name: tab.name,
+            text: tab.text
         }));
 
         this.children[ 0 ].state.set('active', true);
@@ -135,15 +145,16 @@ module.exports.Group = class TabGroup extends Component {
                 element('header', { id: 'tabs' }, [
                     element('section', { id: 'start' }, start.map((tab, i) => (
                         element('button', { id: `tab-${ i }`, onclick: () => this.activate(i) }, [
-                            element(Icon, { glyph: tab.icon, color: 'white' })
+                            tab.icon ? element(Icon, { glyph: tab.icon, color: 'white' }) : element('span', null, tab.text)
                         ])
                     ))),
                     element('section', { id: 'end' }, end.map((tab, i) => (
                         element('button', { id: `tab-${ start.length + i }`, onclick: () => this.activate(start.length + i) }, [
-                            element(Icon, { glyph: tab.icon, color: 'white' })
+                            tab.icon ? element(Icon, { glyph: tab.icon, color: 'white' }) : element('span', null, tab.text)
                         ])
                     )))
                 ]),
+                element('div', { id: 'divider' }),
                 element('section', { id: 'content' }, [
                     element('slot')
                 ])
