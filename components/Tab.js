@@ -40,7 +40,7 @@ module.exports.Group = class TabGroup extends Component {
 
     get css () {
         const active = this.state.get('active');
-        const { white, brand, foreground, highlight } = palette;
+        const { white, brand, foreground, highlight, darklight } = palette;
 
         return `
             :host {
@@ -52,14 +52,13 @@ module.exports.Group = class TabGroup extends Component {
                 display: flex;
                 flex-grow: 1;
                 flex-direction: column;
-                padding: 4px;
             }
 
             #divider {
                 z-index: 1;
                 height: 3px;
                 background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
-                box-shadow: 0 0 4px 1px hsla(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%, 0.33);
+                box-shadow: 0 0 5px 1px hsla(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%, 0.33);
             }
 
             #tabs {
@@ -68,13 +67,16 @@ module.exports.Group = class TabGroup extends Component {
 
             #tabs button {
                 display: flex;
+                flex-grow: ${ this.fluid ? 1 : 0 };
+                max-width: 240px;
                 margin: 0 4px 0 0;
                 padding: 8px 16px;
                 font-size: inherit;
                 font-family: inherit;
-                color: hsl(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%);
-                background: hsl(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%);
-                box-shadow: inset 0 1px hsl(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%);
+                color: hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.75);
+                background: hsla(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%, 0.60);
+                box-shadow: inset 0 1px hsla(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%, 0.66),
+                            0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33);
                 border: none;
                 outline: none;
                 transition: .12s ease;
@@ -85,8 +87,10 @@ module.exports.Group = class TabGroup extends Component {
             }
 
             #tabs #tab-${ active } {
+                color: hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9);
                 background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
-                box-shadow: 0 0 4px 1px hsla(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%, 0.33);
+                box-shadow: 0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33),
+                            0 0 5px 1px hsla(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%, 0.33);
             }
 
             #tabs #tab-${ active }:hover {
@@ -95,12 +99,12 @@ module.exports.Group = class TabGroup extends Component {
 
             #start {
                 display: flex;
-                flex-grow: 0;
+                flex-grow: 1;
             }
 
             #end {
                 display: flex;
-                flex-grow: 1;
+                flex-grow: 0;
                 justify-content: flex-end;
             }
 
@@ -145,12 +149,12 @@ module.exports.Group = class TabGroup extends Component {
                 element('header', { id: 'tabs' }, [
                     element('section', { id: 'start' }, start.map((tab, i) => (
                         element('button', { id: `tab-${ i }`, onclick: () => this.activate(i) }, [
-                            tab.icon ? element(Icon, { glyph: tab.icon, color: 'white' }) : element('span', null, tab.text)
+                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text)
                         ])
                     ))),
                     element('section', { id: 'end' }, end.map((tab, i) => (
                         element('button', { id: `tab-${ start.length + i }`, onclick: () => this.activate(start.length + i) }, [
-                            tab.icon ? element(Icon, { glyph: tab.icon, color: 'white' }) : element('span', null, tab.text)
+                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text)
                         ])
                     )))
                 ]),
@@ -166,5 +170,6 @@ module.exports.Group = class TabGroup extends Component {
 module.exports.Group.elementName = 'elementary-tab-group';
 
 module.exports.Group.initialState = {
-    active: 0
+    active: 0,
+    fluid: false
 };

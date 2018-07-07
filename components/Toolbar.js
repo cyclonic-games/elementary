@@ -8,7 +8,7 @@ const Icon = require('./Icon');
 module.exports = class Toolbar extends Component {
 
     get css () {
-        const { white, brand, foreground, highlight } = palette;
+        const { white, brand, foreground, highlight, darklight } = palette;
 
         return `
             #container {
@@ -17,7 +17,8 @@ module.exports = class Toolbar extends Component {
                 height: 36px;
                 margin-bottom: 4px;
                 padding: 0 8px;
-                background: hsl(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%);
+                background: hsla(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%, 0.60);
+                box-shadow: 0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33);
             }
         `;
     }
@@ -36,13 +37,13 @@ module.exports.elementName = 'elementary-toolbar';
 module.exports.Button = class ToolbarButton extends Component {
 
     get css () {
-        const { highlight, background } = palette;
+        const { highlight, darklight, background } = palette;
 
         return `
             :host {
                 margin-right: -1px;
                 line-height: 0;
-                border: 1px solid hsla(${ background[ 0 ] }, ${ background[ 1 ] }%, ${ background[ 2 ] }%, 0.85);
+                border: 1px solid hsla(${ background[ 0 ] }, ${ background[ 1 ] }%, ${ background[ 2 ] }%, 0.5);
                 border-radius: 1px;
             }
 
@@ -54,10 +55,10 @@ module.exports.Button = class ToolbarButton extends Component {
                 line-height: 0;
                 font-size: inherit;
                 font-family: inherit;
-                color: white;
+                color: rgba(255, 255, 255, 0.8);
                 background: inherit;
                 border: none;
-                box-shadow: inset 0 1px hsl(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%);
+                box-shadow: inset 0 1px hsla(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%, 0.66);
                 outline: none;
                 transition: all .12s ease;
             }
@@ -68,7 +69,7 @@ module.exports.Button = class ToolbarButton extends Component {
 
             #button:active {
                 background: hsla(${ background[ 0 ] }, ${ background[ 1 ] }%, ${ background[ 2 ] }%, 0.5);
-                box-shadow: none;
+                box-shadow: inset 0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33);
             }
         `;
     }
@@ -76,7 +77,7 @@ module.exports.Button = class ToolbarButton extends Component {
     render () {
         return (
             element('button', { id: 'button' }, [
-                element(Icon, { size: 18, glyph: this.icon, color: 'white' })
+                element(Icon, { size: 18, glyph: this.icon, color: 'rgba(255, 255, 255, 0.75)' })
             ])
         )
     }
