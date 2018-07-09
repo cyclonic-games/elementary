@@ -86,6 +86,10 @@ module.exports.Group = class TabGroup extends Component {
                 background: hsl(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%);
             }
 
+            #tabs button:last-of-type {
+                margin-right: 0;
+            }
+
             #tabs #tab-${ active } {
                 color: hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9);
                 background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
