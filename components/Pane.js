@@ -7,7 +7,7 @@ module.exports = class Pane extends Component {
 
     get css () {
         const { white, brand, foreground, highlight, darklight } = palette;
-        const { direction, grow, shrink, basis } = this;
+        const { connected, direction, grow, shrink, basis } = this;
 
         return `
             :host {
@@ -26,9 +26,12 @@ module.exports = class Pane extends Component {
                 flex-direction: column;
                 padding: 4px;
                 color: hsl(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%);
-                background: hsla(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%, 0.60);
-                box-shadow: inset 0 1px hsla(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%, 0.66),
-                            0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33);
+                background: hsla(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%, 0.6);
+
+                ${ !connected && `
+                    box-shadow: inset 0 1px hsla(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%, 0.66),
+                                0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33);
+                ` }
             }
         `;
     }
@@ -45,6 +48,7 @@ module.exports = class Pane extends Component {
 module.exports.elementName = 'elementary-pane';
 
 module.exports.defaultProperties = {
+    connected: false,
     width: 'auto',
     height: 'auto',
     direction: 'column',

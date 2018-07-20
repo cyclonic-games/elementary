@@ -196,7 +196,7 @@ Menu.Item = class MenuItem extends Component {
                     element(Icon, {
                         id: 'icon',
                         size: 12,
-                        glyph: this.children.length > 0 ? open ? 'file/folder_open' : 'file/folder' : 'action/description',
+                        glyph: this.children.length > 0 ? open ? 'file/folder_open' : 'file/folder' : this.icon,
                         color: selected ? 'white' : 'rgba(255, 255, 255, 0.7)'
                     }),
                     this.text
@@ -220,6 +220,7 @@ Menu.Item.initialState = {
 };
 
 Menu.Item.defaultProperties = {
+    icon: 'action/description',
     text: ''
 };
 

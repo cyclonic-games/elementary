@@ -73,9 +73,9 @@ module.exports.Group = class TabGroup extends Component {
                 max-width: 240px;
                 margin: 0 4px 0 0;
                 padding: 8px 16px;
-                font-size: inherit;
+                font-size: 11px;
                 font-family: inherit;
-                font-weight: 300;
+                font-weight: 600;
                 color: hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.75);
                 background: hsla(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%, 0.60);
                 box-shadow: inset 0 1px hsla(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%, 0.66),
@@ -94,7 +94,6 @@ module.exports.Group = class TabGroup extends Component {
             }
 
             #tabs #tab-${ active } {
-                font-weight: 600;
                 color: hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9);
                 background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
                 box-shadow: 0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33),
@@ -168,6 +167,11 @@ module.exports.Group = class TabGroup extends Component {
                 flex-grow: 1;
                 flex-direction: column;
             }
+
+            #icon {
+                position: relative;
+                top: 2px;
+            }
         `;
     }
 
@@ -202,13 +206,13 @@ module.exports.Group = class TabGroup extends Component {
                 element('header', { id: 'tabs' }, [
                     element('section', { id: 'start' }, start.map((tab, i) => (
                         element('button', { id: `tab-${ i }`, onclick: () => this.activate(i) }, [
-                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
+                            tab.icon ? element(Icon, { id: 'icon', glyph: tab.icon, color: i === active ? 'white' : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
                             tab.temp && i === active ? element('button', { id: 'tab-close' }) : null
                         ])
                     ))),
                     element('section', { id: 'end' }, end.map((tab, i) => (
                         element('button', { id: `tab-${ start.length + i }`, onclick: () => this.activate(start.length + i) }, [
-                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
+                            tab.icon ? element(Icon, { id: 'icon', glyph: tab.icon, color: start.length + i === active ? 'white' : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
                             tab.temporary && start.length + i === active ? element('button', { id: 'tab-close' }) : null
                         ])
                     )))
