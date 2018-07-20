@@ -68,18 +68,21 @@ module.exports.Group = class TabGroup extends Component {
             #tabs button {
                 display: flex;
                 flex-grow: ${ this.fluid ? 1 : 0 };
+                align-items: center;
+                justify-content: space-between;
                 max-width: 240px;
                 margin: 0 4px 0 0;
                 padding: 8px 16px;
                 font-size: inherit;
                 font-family: inherit;
+                font-weight: 300;
                 color: hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.75);
                 background: hsla(${ foreground[ 0 ] }, ${ foreground[ 1 ] }%, ${ foreground[ 2 ] }%, 0.60);
                 box-shadow: inset 0 1px hsla(${ highlight[ 0 ] }, ${ highlight[ 1 ] }%, ${ highlight[ 2 ] }%, 0.66),
                             0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33);
                 border: none;
                 outline: none;
-                transition: .12s ease;
+                transition: all .12s ease;
             }
 
             #tabs button:hover {
@@ -91,6 +94,7 @@ module.exports.Group = class TabGroup extends Component {
             }
 
             #tabs #tab-${ active } {
+                font-weight: 600;
                 color: hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9);
                 background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
                 box-shadow: 0 0 4px hsla(${ darklight[ 0 ] }, ${ darklight[ 1 ] }%, ${ darklight[ 2 ] }%, 0.33),
@@ -99,6 +103,49 @@ module.exports.Group = class TabGroup extends Component {
 
             #tabs #tab-${ active }:hover {
                 background: hsl(${ brand[ 0 ] }, ${ brand[ 1 ] }%, ${ brand[ 2 ] }%);
+            }
+
+            #tabs #tab-close {
+                position: relative;
+                top: 1px;
+                right: -4px;
+                flex-grow: 0;
+                flex-shrink: 1;
+                display: block;
+                width: 10px;
+                height: 10px;
+                margin-left: 10px;
+                padding: 0;
+                background: none;
+                border: none;
+                border-radius: 100%;
+                box-shadow: inset 0 0 0 1px hsl(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%),
+                            inset 0 0 4px 3px hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.2),
+                            0 0 6px 2px hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.33);
+                outline: none;
+                opacity: 0;
+                transition: all .12s ease;
+            }
+
+            #tabs #tab-close:hover {
+                background: hsl(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%);
+                box-shadow: inset 0 0 0 1px hsl(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%),
+                            inset 0 0 4px 4px hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.2),
+                            0 0 12px 3px hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.64);
+            }
+
+            #tabs #tab-close:active {
+                box-shadow: none !important;
+                opacity: 0.66 !important;
+            }
+
+            #tabs button:hover #tab-close {
+                opacity: 1;
+            }
+
+            #tabs span {
+                position: relative;
+                top: 1px;
             }
 
             #start {
@@ -129,6 +176,7 @@ module.exports.Group = class TabGroup extends Component {
             align: tab.align,
             icon: tab.icon,
             name: tab.name,
+            temp: tab.temp,
             text: tab.text
         }));
 
@@ -145,6 +193,7 @@ module.exports.Group = class TabGroup extends Component {
     }
 
     render () {
+        const active = this.state.get('active');
         const start = this.tabs.filter(tab => tab.align === 'start');
         const end = this.tabs.filter(tab => tab.align === 'end');
 
@@ -153,12 +202,14 @@ module.exports.Group = class TabGroup extends Component {
                 element('header', { id: 'tabs' }, [
                     element('section', { id: 'start' }, start.map((tab, i) => (
                         element('button', { id: `tab-${ i }`, onclick: () => this.activate(i) }, [
-                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text)
+                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
+                            tab.temp && i === active ? element('button', { id: 'tab-close' }) : null
                         ])
                     ))),
                     element('section', { id: 'end' }, end.map((tab, i) => (
                         element('button', { id: `tab-${ start.length + i }`, onclick: () => this.activate(start.length + i) }, [
-                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text)
+                            tab.icon ? element(Icon, { glyph: tab.icon, color: i === this.active ? `hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.9)` : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
+                            tab.temporary && start.length + i === active ? element('button', { id: 'tab-close' }) : null
                         ])
                     )))
                 ]),

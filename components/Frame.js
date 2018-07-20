@@ -66,7 +66,12 @@ module.exports = class Frame extends Component {
                 border: none;
                 border-radius: 100%;
                 outline: none;
-                transition: background .12s ease;
+                transition: all .12s ease;
+            }
+
+            #controls button:active {
+                box-shadow: none !important;
+                opacity: 0.66 !important;
             }
 
             #controls #close {
