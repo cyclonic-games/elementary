@@ -70,6 +70,10 @@ module.exports.Split = class SplitPane extends Component {
                 flex-grow: ${ grow };
                 flex-shrink: ${ shrink };
                 flex-direction: ${ direction };
+
+                ${ shrink && basis && `
+                    width: ${ basis };
+                ` }
             }
 
             #split-pane {

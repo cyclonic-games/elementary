@@ -52,6 +52,7 @@ module.exports.Group = class TabGroup extends Component {
                 display: flex;
                 flex-grow: 1;
                 flex-direction: column;
+                width: 0;
             }
 
             #divider {
@@ -176,13 +177,7 @@ module.exports.Group = class TabGroup extends Component {
     }
 
     handleComponentConnect () {
-        this.tabs = Array.from(this.children).map(tab => ({
-            align: tab.align,
-            icon: tab.icon,
-            name: tab.name,
-            temp: tab.temp,
-            text: tab.text
-        }));
+        this.tabs = Array.from(this.children);
 
         this.children[ 0 ].state.set('active', true);
     }

@@ -10,6 +10,10 @@ module.exports = class Flex extends Component {
                 flex-grow: ${ this.grow };
                 flex-shrink: ${ this.shrink };
                 flex-basis: ${ this.basis };
+
+                ${ this.shrink && this.basis && `
+                    width: ${ this.basis };
+                ` }
             }
 
             #flex {
@@ -18,6 +22,8 @@ module.exports = class Flex extends Component {
                 flex-shrink: ${ this.shrink };
                 flex-basis: ${ this.basis };
                 flex-direction: ${ this.direction };
+                justify-content: ${ this.justify };
+                width: 0;
             }
         `;
     }
@@ -38,5 +44,6 @@ module.exports.defaultProperties = {
     grow: 0,
     shrink: 0,
     basis: 'auto',
-    direction: 'row'
+    direction: 'row',
+    justify: 'flex-start'
 };
