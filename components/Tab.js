@@ -4,6 +4,7 @@ const element = require('quark/core/element');
 const palette = require('../core/palette');
 
 const Icon = require('./Icon');
+const Tooltip = require('./Tooltip');
 
 module.exports = class Tab extends Component {
 
@@ -29,6 +30,7 @@ module.exports.elementName = 'elementary-tab';
 module.exports.defaultProperties = {
     align: 'start',
     icon: null,
+    temporary: false,
     text: null
 };
 
@@ -67,6 +69,7 @@ module.exports.Group = class TabGroup extends Component {
             }
 
             #tabs button {
+                position: relative;
                 display: flex;
                 flex-grow: ${ this.fluid ? 1 : 0 };
                 align-items: center;
@@ -131,7 +134,7 @@ module.exports.Group = class TabGroup extends Component {
                 background: hsl(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%);
                 box-shadow: inset 0 0 0 1px hsl(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%),
                             inset 0 0 4px 4px hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.2),
-                            0 0 12px 3px hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.64);
+                            0 0 12px 3px hsla(${ white[ 0 ] }, ${ white[ 1 ] }%, ${ white[ 2 ] }%, 0.5);
             }
 
             #tabs #tab-close:active {
@@ -199,18 +202,32 @@ module.exports.Group = class TabGroup extends Component {
         return (
             element('section', { id: 'container' }, [
                 element('header', { id: 'tabs' }, [
-                    element('section', { id: 'start' }, start.map((tab, i) => (
-                        element('button', { id: `tab-${ i }`, onclick: () => this.activate(i) }, [
-                            tab.icon ? element(Icon, { id: 'icon', glyph: tab.icon, color: i === active ? 'white' : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
-                            tab.temp && i === active ? element('button', { id: 'tab-close' }) : null
+                    element('section', { id: 'start' }, start.map((tab, i) => {
+
+                        if (tab.icon) return element('button', { id: `tab-${ i }`, onclick: () => this.activate(i) }, [
+                            element(Icon, { id: 'icon', glyph: tab.icon, color: i === active ? 'white' : 'rgba(255, 255, 255, 0.75)' }),
+                            element(Tooltip, { text: tab.name }),
+                            tab.temporary && i === active ? element('button', { id: 'tab-close' }) : null
                         ])
-                    ))),
-                    element('section', { id: 'end' }, end.map((tab, i) => (
-                        element('button', { id: `tab-${ start.length + i }`, onclick: () => this.activate(start.length + i) }, [
-                            tab.icon ? element(Icon, { id: 'icon', glyph: tab.icon, color: start.length + i === active ? 'white' : 'rgba(255, 255, 255, 0.75)' }) : element('span', null, tab.text),
+
+                        return element('button', { id: `tab-${ i }`, onclick: () => this.activate(i) }, [
+                            element('span', null, tab.text),
+                            tab.temporary && i === active ? element('button', { id: 'tab-close' }) : null
+                        ])
+                    })),
+                    element('section', { id: 'end' }, end.map((tab, i) => {
+
+                        if (tab.icon) return element('button', { id: `tab-${ start.length + i }`, onclick: () => this.activate(start.length + i) }, [
+                            element(Icon, { id: 'icon', glyph: tab.icon, color: start.length + i === active ? 'white' : 'rgba(255, 255, 255, 0.75)' }),
+                            element(Tooltip, { text: tab.name }),
                             tab.temporary && start.length + i === active ? element('button', { id: 'tab-close' }) : null
                         ])
-                    )))
+
+                        return element('button', { id: `tab-${ start.length + i }`, onclick: () => this.activate(start.length + i) }, [
+                            element('span', null, tab.text),
+                            tab.temporary && start.length + i === active ? element('button', { id: 'tab-close' }) : null
+                        ])
+                    }))
                 ]),
                 element('div', { id: 'divider' }),
                 element('section', { id: 'content' }, [

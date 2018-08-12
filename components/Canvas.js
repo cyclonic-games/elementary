@@ -3,7 +3,7 @@ const element = require('quark/core/element');
 
 const palette = require('../core/palette');
 
-module.exports = class Icon extends Component {
+module.exports = class Canvas extends Component {
 
     get css () {
         const { foreground, highlight } = palette;

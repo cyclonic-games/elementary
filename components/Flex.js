@@ -22,6 +22,7 @@ module.exports = class Flex extends Component {
                 flex-shrink: ${ this.shrink };
                 flex-basis: ${ this.basis };
                 flex-direction: ${ this.direction };
+                align-items: ${ this.align };
                 justify-content: ${ this.justify };
                 width: 0;
             }
@@ -45,5 +46,6 @@ module.exports.defaultProperties = {
     shrink: 0,
     basis: 'auto',
     direction: 'row',
+    align: 'initial',
     justify: 'flex-start'
 };
