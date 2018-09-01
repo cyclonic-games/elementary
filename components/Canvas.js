@@ -20,19 +20,19 @@ module.exports = class Canvas extends Component {
                 box-shadow: 0 0 8px rgba(0, 0, 0, 0.33);
             }
 
-            #canvas {
+            canvas {
                 display: block;
             }
         `;
     }
 
-    getContext (type) {
-        return this.shadowRoot.getElementById('canvas').getContext(type);
+    get native () {
+        return this.shadowRoot.querySelector('canvas');
     }
 
     render () {
         return [
-            element('canvas', { id: 'canvas', width: this.width, height: this.height })
+            element('canvas', { width: this.width, height: this.height })
         ]
     }
 };
